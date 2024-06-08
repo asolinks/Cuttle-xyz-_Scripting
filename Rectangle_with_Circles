@@ -1,0 +1,47 @@
+/*
+Input in Code Component A
+The aim of this code is to create a dynamic rectangle in cuttle.xyz scripting,
+with dynamically selected number of circles in them. With this we can print out a box,
+using laser cutting, without rewriting the script, only changing the values of the
+variables below (note scale = 0.5 inches).
+recLength = 3
+recWidth = 2
+cirRadius = 0.5
+numCircles = 3
+recXposition = 0
+recYposition = 0
+*/
+
+
+const o = Rectangle().transform({
+  position: Vec(recXposition, recYposition),
+  scale: Vec(recLength, recWidth)
+});
+
+const circles = Circle().transform({
+  position: Vec(recXposition, recYposition),
+  scale: cirRadius
+});
+
+const output = [];
+
+const xIncrement = recLength / (numCircles + 1);
+const yPosition = recYposition; // Center y position
+
+// Clone the circle 'numCircles' times and store each clone in the 'output' array
+for(let i = 0; i < numCircles; i++){
+  const circleClone = circles.clone();   // Clone the circle
+  
+  // Calculate the new position
+ const newPosition = Vec(recXposition - recLength / 2 + (i + 1) * xIncrement, yPosition);
+  
+  // Transform the cloned circle to the new position
+  circleClone.transform({
+    position: newPosition,
+    scale: cirRadius 
+  });
+    output.push(circleClone);  // Add the clone to the output array
+}
+  
+const code = [o, output];
+return code;
